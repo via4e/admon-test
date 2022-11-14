@@ -1,6 +1,20 @@
-# Buffer
+## App
+Test task for interview
+
+version: 0.1 alpha
+Stack: Docker, Clickhouse, NodeJS
+
 Receives data in JSON, buffers and sends to Clickhouse
 
+## TODO
+Поправить согласно фидбэка:
+1. Дополнительная сортировка плохо влияет на производительность 
+2. Не обрабатывается ошибка вставки – возможно потеря данных 
+3. Решение не запустить в несколько потоков (используется 1 порт и только локальный буфер) 
+4. при перезапуске сервиса данные теряются 
+
+
+# How it works. Buffer
 Accept JSONs by POST request.
 Every JSON contains 'table' property, specified table to write
 
