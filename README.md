@@ -1,4 +1,5 @@
 # Buffer
+Receives data in JSON, buffers and sends to Clickhouse
 
 Accept JSONs by POST request.
 Every JSON contains 'table' property, specified table to write
@@ -10,6 +11,9 @@ For example:
     "message": "From Syberia with love",
     "table": "str1"
 }
+
+## POSTing test DATA with curl
+curl -X POST 'http://127.0.0.1:3030/ch' -H "Content-Type: application/json" -d '{"id": "213123", "name": "michael", "message": "Hello-bonjour", "table": "str1"}'
 
 ## Setup
 
@@ -31,15 +35,14 @@ CREATE TABLE IF NOT EXISTS testtask.str1(
 ) ENGINE = MergeTree
 ORDER BY id
 
-
 ## Set configuration with environment variables
 ### Linux
+
+
 CH_MAX_SIZE = 256      // default value, records
 CH_MAX_TIMEOUT =  180   // default value, seconds
+CH_DB = 'testtask'      // default value - testtask
 
 CLICKHOUSE_HOST         // default - 'http://localhost:8123'
 CLICKHOUSE_USER         // default - 'default'
 CLICKHOUSE_PASSWORD     // default - ''
-
-## POSTing test DATA with curl
-curl -X POST 'http://127.0.0.1:3030/ch' -H "Content-Type: application/json" -d '{"id": "213123", "name": "michael", "message": "Hello-bonjour", "table": "str1"}'

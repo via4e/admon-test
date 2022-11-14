@@ -8,7 +8,7 @@ const client = createClient({
     host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
     user: process.env.CLICKHOUSE_USER ?? 'default',
     password: process.env.CLICKHOUSE_PASSWORD ?? '',
-    database: 'testtask'
+    database: process.env.CH_DB ?? 'testtask'
   })
 
 app.use(bodyParser.urlencoded({ extended: false }));
