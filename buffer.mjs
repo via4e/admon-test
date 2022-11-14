@@ -1,7 +1,15 @@
 const PORT = 3030
-const express = require('express')
-const bodyParser = require("body-parser");
+// const express = require('express')
+import bodyParser from  'body-parser'
+import express from 'express'
+import { createClient } from '@clickhouse/client'
 const app = express()
+const client = createClient({
+    host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
+    user: process.env.CLICKHOUSE_USER ?? 'default',
+    password: process.env.CLICKHOUSE_PASSWORD ?? '',
+    database: 'testtask'
+  })
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -18,13 +26,13 @@ app.get('/', (req, res) => {
 })
 
 app.post('/ch', (req, res) => {
-    const { id, name, message, timestamp, table } = req.body
+    const { id, name, message, table } = req.body
     
-    if (id && name && message && timestamp && table) {
+    if (id && name && message && table) {
         chunk.push({
             table,
             data: {
-                id, name, message, timestamp
+                id, name, message
             }
         })
     }
@@ -40,6 +48,17 @@ app.post('/ch', (req, res) => {
 app.listen(PORT, ()=>console.log(`Server run on port ${PORT}...`));
 
 // Clickhouse Handler
-const chHandler = (who) => {
+const chHandler = async (who) => {
     console.log(who, Date.now())
+
+    if (!chunk[0]?.table) return 0
+
+    const chunckTable = chunk[0].table
+    const data = chunk.filter((e)=>e.table === chunckTable).map((e)=>e.data)
+
+    await client.insert({
+        table: chunckTable,
+        values: data,
+        format: 'JSONEachRow',
+      })
 }
