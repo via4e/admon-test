@@ -13,7 +13,7 @@ For example:
 }
 
 ## POSTing test DATA with curl
-curl -X POST 'http://127.0.0.1:3030/ch' -H "Content-Type: application/json" -d '{"id": "213123", "name": "michael", "message": "Hello-bonjour", "table": "str1"}'
+curl -X POST 'http://127.0.0.1:3030/ch' -H "Content-Type: application/json" -d '{"id": "21334123", "name": "Nikolay", "message": "Hello-bonjour", "table": "str1"}'
 
 ## Setup
 

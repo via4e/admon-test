@@ -51,7 +51,7 @@ app.listen(PORT, ()=>console.log(`Server run on port ${PORT}...`));
 const chHandler = async (who) => {
     console.log(who, Date.now())
 
-    if (!chunk[0]?.table) return 0
+    if (!chunk.length) return 0
 
     const chunckTable = chunk[0].table
     const data = chunk.filter((e)=>e.table === chunckTable).map((e)=>e.data)
@@ -60,5 +60,7 @@ const chHandler = async (who) => {
         table: chunckTable,
         values: data,
         format: 'JSONEachRow',
-      })
+    })
+
+    chunk.length = 0
 }
